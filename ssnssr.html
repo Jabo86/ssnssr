@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leggi per OSS - Guida Normativa</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            margin: 0;
+            padding: 20px;
+            color: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8em;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700;
+            margin-bottom: 30px;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #ffd700; }
+            to { text-shadow: 0 0 20px #ffd700; }
+        }
+
+        .sections {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .section-box {
+            width: 48%;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .section-box h2 {
+            font-size: 1.8em;
+            color: #00eaff;
+            text-shadow: 0 0 5px #00eaff;
+            margin: 0 0 15px 0;
+        }
+
+        .section-box p {
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        #searchInput {
+            padding: 12px;
+            width: 300px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 25px 0 0 25px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            outline: none;
+        }
+
+        #searchButton {
+            padding: 12px 20px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 0 25px 25px 0;
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            color: #1a1a2e;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        #searchButton:hover {
+            transform: scale(1.05);
+        }
+
+        .laws-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .law-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .law-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .law-card h3 {
+            font-size: 1.5em;
+            color: #00eaff;
+            margin: 0 0 10px 0;
+            text-shadow: 0 0 5px #00eaff;
+        }
+
+        .law-card p {
+            font-size: 1.1em;
+            line-height: 1.5;
+            color: #f0f0f0;
+        }
+
+        .regions-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .region-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .region-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .region-box span {
+            font-size: 1.2em;
+            color: #00eaff;
+            text-shadow: 0 0 5px #00eaff;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .modal-content h2 {
+            font-size: 2em;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            color: #ffd700;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .close-button:hover {
+            transform: scale(1.2);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Leggi per OSS - Guida Normativa</h1>
+
+        <div class="sections">
+            <div class="section-box" id="ssnBox">
+                <h2>Sistema Sanitario Nazionale</h2>
+                <p>Il Sistema Sanitario Nazionale (SSN) garantisce l’assistenza sanitaria universale in Italia, regolato da normative chiave come la Legge 833/1978 e il D.Lgs. 502/1992.</p>
+            </div>
+            <div class="section-box" id="ssrBox">
+                <h2>Sistema Sanitario Regionale</h2>
+                <p>Il Sistema Sanitario Regionale (SSR) organizza i servizi sanitari a livello territoriale, gestiti dalle Regioni in base al decentramento avviato dal DPR 616/1977.</p>
+            </div>
+        </div>
+
+        <div class="search-bar" id="searchBar" style="display: none;">
+            <input type="text" id="searchInput" placeholder="Cerca una legge o un tema...">
+            <button id="searchButton">Cerca</button>
+        </div>
+
+        <div class="laws-grid" id="lawsGrid"></div>
+        <div class="regions-grid" id="regionsGrid"></div>
+    </div>
+
+    <div class="modal" id="lawModal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">✖</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalDetail"></p>
+        </div>
+    </div>
+
+    <script>
+        const nationalLaws = [
+            {
+                title: "Legge 22 dicembre 1888, n. 5849",
+                year: 1888,
+                brief: "Istituisce i medici condotti e le condotte sanitarie nei comuni, garantendo assistenza medica gratuita ai poveri e nelle aree rurali.",
+                detail: "La Legge 22 dicembre 1888, n. 5849, nota come Legge Crispi-Pagliani, rappresenta una pietra miliare nella storia della sanità pubblica italiana. Promulgata durante il governo di Francesco Crispi, questa norma ha introdotto un sistema strutturato di assistenza sanitaria territoriale, istituendo la figura del medico condotto, un professionista incaricato di fornire cure gratuite ai cittadini indigenti e nelle zone rurali. I comuni erano obbligati a finanziare tali servizi, creando un primo embrione di sanità pubblica organizzata. Sebbene superata dall’istituzione del Servizio Sanitario Nazionale (SSN) con la Legge 833/1978, questa legge ha posto le basi per l’assistenza territoriale moderna, oggi gestita dalle ASL, dove gli Operatori Socio-Sanitari (OSS) svolgono un ruolo cruciale. Storicamente, riflette un’epoca di assistenza frammentata e locale, in contrasto con l’universalità del sistema attuale."
+            },
+            {
+                title: "Legge 17 luglio 1890, n. 6972",
+                year: 1890,
+                brief: "Disciplina l’esercizio delle professioni sanitarie (medici, farmacisti) e la gestione delle farmacie.",
+                detail: "La Legge 17 luglio 1890, n. 6972, è una normativa fondamentale per la regolamentazione delle professioni sanitarie in Italia. Essa stabilisce i requisiti professionali per medici e farmacisti, introducendo controlli statali sulla gestione delle farmacie per garantire qualità e sicurezza delle cure. Questa legge segna un passo verso la professionalizzazione del settore sanitario, distinguendo chiaramente le figure regolamentate da quelle di supporto, come l’OSS odierno. Il suo impatto si riflette ancora oggi nelle normative che definiscono competenze e responsabilità nel sistema sanitario, ponendo le basi per la successiva evoluzione legislativa culminata nel SSN."
+            },
+            {
+                title: "Legge 6 marzo 1943, n. 138",
+                year: 1943,
+                brief: "Riordina l’assistenza ospedaliera durante il fascismo, centralizzando la gestione degli ospedali pubblici.",
+                detail: "Promulgata il 6 marzo 1943, durante la Seconda Guerra Mondiale, la Legge n. 138 ha centralizzato la gestione degli ospedali pubblici sotto il controllo statale, rispondendo alla necessità di efficienza in un periodo di crisi. Questa normativa ha segnato un’evoluzione significativa nella struttura ospedaliera italiana, trasformando gli ospedali in enti più organizzati e accessibili. Sebbene superata dal SSN, il suo lascito è evidente negli ospedali moderni, dove l’OSS opera quotidianamente, supportando il personale sanitario nella gestione dei pazienti e delle attività assistenziali."
+            },
+            {
+                title: "Legge 12 luglio 1945, n. 417",
+                year: 1945,
+                brief: "Riforma post-bellica che riorganizza i servizi sanitari dopo la Seconda Guerra Mondiale.",
+                detail: "La Legge 12 luglio 1945, n. 417, emanata nel contesto post-bellico, ha riorganizzato i servizi sanitari italiani devastati dalla guerra. Istituisce l’Alto Commissariato per l’Igiene e la Sanità Pubblica (ACIS), trasferendo competenze dal Ministero dell’Interno alla Presidenza del Consiglio. Questa norma rappresenta una transizione verso un sistema sanitario più centralizzato, preparando il terreno per il SSN. Per l’OSS, è un riferimento storico che aiuta a comprendere l’evoluzione dei servizi sanitari pubblici, oggi fulcro del loro lavoro."
+            },
+            {
+                title: "GU n. 298 del 27-12-1947",
+                year: 1947,
+                brief: "Pubblica decreti attuativi post-Costituzione (art. 32) per prevenzione e assistenza sanitaria.",
+                detail: "La Gazzetta Ufficiale n. 298 del 27 dicembre 1947 pubblica i decreti attuativi dell’articolo 32 della Costituzione, che riconosce la salute come diritto fondamentale dell’individuo e interesse della collettività. Questi decreti rafforzano i principi di prevenzione e assistenza sanitaria, ponendo le basi per il futuro SSN. Per l’OSS, questa pubblicazione è rilevante poiché evidenzia l’importanza della tutela della salute come diritto universale, un principio che guida il loro operato quotidiano nelle strutture sanitarie pubbliche."
+            },
+            {
+                title: "Legge 13 marzo 1958, n. 296",
+                year: 1958,
+                brief: "Riorganizza gli ospedali pubblici come enti autonomi, definendo ruoli del personale sanitario.",
+                detail: "La Legge 13 marzo 1958, n. 296, istituisce il Ministero della Sanità e trasforma gli ospedali pubblici in enti autonomi, segnando un passo verso la modernizzazione del sistema sanitario. Definisce i ruoli del personale sanitario, gettando le basi per la strutturazione degli ospedali contemporanei, dove l’OSS svolge compiti di assistenza diretta ai pazienti. Questa legge rappresenta un’evoluzione organizzativa che ha favorito l’integrazione delle figure di supporto nel sistema sanitario nazionale."
+            },
+            {
+                title: "Legge 12 febbraio 1968, n. 132 (Legge Mariotti)",
+                year: 1968,
+                brief: "Trasforma gli ospedali in enti pubblici con autonomia gestionale.",
+                detail: "La Legge 12 febbraio 1968, n. 132, nota come Legge Mariotti, rivoluziona il sistema ospedaliero italiano trasformando gli ospedali in enti pubblici autonomi. Promulgata durante il governo di Aldo Moro, questa norma introduce una gestione più indipendente e strutturata, ponendo le basi per il SSN istituito nel 1978. Per l’OSS, è una legge fondamentale, poiché definisce l’ambiente operativo degli ospedali moderni, dove collaborano con medici e infermieri nell’erogazione dell’assistenza."
+            },
+            {
+                title: "Legge 20 maggio 1970, n. 300 (Statuto dei Lavoratori)",
+                year: 1970,
+                brief: "Tutela i diritti dei lavoratori, garantendo sicurezza e privacy.",
+                detail: "La Legge 20 maggio 1970, n. 300, conosciuta come Statuto dei Lavoratori, è una normativa cardine per la tutela dei diritti dei lavoratori in Italia. Garantisce sicurezza sul lavoro, privacy e diritti sindacali, regolando aspetti come turni, ferie e condizioni lavorative. Per l’OSS, questa legge è essenziale, poiché protegge i loro diritti come dipendenti sanitari, stabilendo obblighi per i datori di lavoro in materia di sicurezza e salute, principi poi rafforzati dal D.Lgs. 81/2008."
+            },
+            {
+                title: "DPR 14 gennaio 1972, n. 4",
+                year: 1972,
+                brief: "Trasferisce le funzioni sanitarie alle Regioni, avviando il decentramento.",
+                detail: "Il Decreto del Presidente della Repubblica 14 gennaio 1972, n. 4, avvia il processo di decentramento sanitario, trasferendo funzioni sanitarie dallo Stato alle Regioni. Questa norma segna l’inizio di una gestione territoriale della sanità, che culminerà nel DPR 616/1977 e nel SSN. Per l’OSS, è rilevante perché influenza l’organizzazione regionale dei servizi sanitari, come ASL e RSA, dove svolgono le loro mansioni."
+            },
+            {
+                title: "Legge 386/1974",
+                year: 1974,
+                brief: "Riforma le mutue, preparando il SSN.",
+                detail: "La Legge 386 del 1974 riforma il sistema delle mutue, abolendo gradualmente gli enti mutualistici e preparando la transizione verso il Servizio Sanitario Nazionale. Questa normativa segna un passo verso l’universalità dell’assistenza sanitaria, superando un sistema basato sulla categoria lavorativa. Per l’OSS, è un antecedente storico che sottolinea l’importanza dell’accesso universale alle cure, un principio cardine del loro lavoro nel SSN."
+            },
+            {
+                title: "Legge 405/1975",
+                year: 1975,
+                brief: "Istituisce i consultori familiari per la salute materna e infantile.",
+                detail: "La Legge 405 del 1975 istituisce i consultori familiari, strutture dedicate alla prevenzione e all’assistenza per la salute materna e infantile. Questa normativa amplia l’offerta di servizi sanitari territoriali, promuovendo l’educazione sanitaria e il supporto alle famiglie. Per l’OSS, è significativa poiché i consultori rappresentano un contesto operativo dove possono collaborare con altri professionisti nella cura di donne e bambini."
+            },
+            {
+                title: "DPR 616/1977",
+                year: 1977,
+                brief: "Completa il trasferimento di competenze sanitarie e sociali a Regioni e Comuni.",
+                detail: "Il Decreto del Presidente della Repubblica 616 del 1977 completa il decentramento sanitario e sociale, trasferendo competenze alle Regioni e ai Comuni. Questa norma consolida la gestione territoriale dei servizi, come le Residenze Sanitarie Assistenziali (RSA) e i Servizi di Assistenza Domiciliare (SAD), dove l’OSS opera frequentemente. È un passaggio cruciale verso il SSN, definendo l’organizzazione locale della sanità."
+            },
+            {
+                title: "Legge 180/1978 (Legge Basaglia)",
+                year: 1978,
+                brief: "Chiude i manicomi, introducendo i Centri di Salute Mentale (CSM).",
+                detail: "La Legge 180 del 13 maggio 1978, nota come Legge Basaglia, chiude i manicomi e introduce un approccio innovativo alla salute mentale, istituendo i Centri di Salute Mentale (CSM). Promulgata grazie all’opera dello psichiatra Franco Basaglia, questa norma promuove la cura territoriale e umana dei pazienti psichiatrici. Per l’OSS, è rilevante poiché richiede competenze specifiche e sensibilità nel supportare pazienti con disturbi mentali nei CSM o in contesti domiciliari."
+            },
+            {
+                title: "Legge 194/1978",
+                year: 1978,
+                brief: "Disciplina l’interruzione volontaria di gravidanza (IVG).",
+                detail: "La Legge 22 maggio 1978, n. 194, regola l’interruzione volontaria di gravidanza, garantendo il diritto della donna alla scelta con il consenso informato. Questa normativa introduce un equilibrio tra tutela della vita e autodeterminazione, prevedendo servizi sanitari dedicati. Per l’OSS operante in ginecologia, è fondamentale rispettare la volontà della paziente, collaborando con il personale medico nel rispetto dei principi etici e legali stabiliti."
+            },
+            {
+                title: "Legge 833/1978",
+                year: 1978,
+                brief: "Istituisce il SSN, basato su universalità, uguaglianza ed equità.",
+                detail: "La Legge 23 dicembre 1978, n. 833, istituisce il Servizio Sanitario Nazionale (SSN), rivoluzionando l’assistenza sanitaria in Italia. Basata sui principi di universalità, uguaglianza ed equità, questa norma abolisce il sistema delle mutue e crea le ASL come enti operativi. È il pilastro del sistema sanitario moderno, dove l’OSS opera come figura chiave nell’erogazione di prevenzione e cura, supportando pazienti e personale sanitario nelle strutture pubbliche."
+            },
+            {
+                title: "Legge 104/1992",
+                year: 1992,
+                brief: "Tutela i diritti delle persone con disabilità.",
+                detail: "La Legge 5 febbraio 1992, n. 104, è una normativa quadro per l’assistenza, l’integrazione sociale e i diritti delle persone con disabilità. Garantisce servizi sanitari e sociali, promuovendo l’autonomia e la dignità. Per l’OSS, questa legge orienta il lavoro con pazienti disabili, definendo compiti di assistenza e supporto per favorire l’inclusione, sia in ambito domiciliare che istituzionale."
+            },
+            {
+                title: "Legge 23 ottobre 1992, n. 421",
+                year: 1992,
+                brief: "Riforma la PA, razionalizzando il SSN.",
+                detail: "La Legge 23 ottobre 1992, n. 421, delega al governo la razionalizzazione della pubblica amministrazione, incluso il SSN. Introduce criteri di efficienza e contenimento della spesa pubblica, influenzando la gestione delle ASL. Per l’OSS, questa norma impatta indirettamente sull’organizzazione dei servizi sanitari, definendo il contesto operativo delle strutture in cui lavorano."
+            },
+            {
+                title: "D.Lgs. 502/1992",
+                year: 1992,
+                brief: "Riordina il SSN con i LEA e l’aziendalizzazione delle ASL.",
+                detail: "Il Decreto Legislativo 30 dicembre 1992, n. 502, riorganizza il SSN introducendo i Livelli Essenziali di Assistenza (LEA) e l’aziendalizzazione delle ASL. Questa norma rafforza la gestione economica e operativa del sistema sanitario, garantendo standard uniformi di cura. Per l’OSS, è cruciale poiché definisce le prestazioni essenziali che devono erogare, come assistenza di base e riabilitazione, all’interno delle ASL."
+            },
+            {
+                title: "Legge 626/1994",
+                year: 1994,
+                brief: "Introduce obblighi di sicurezza sul lavoro.",
+                detail: "La Legge 19 settembre 1994, n. 626, recepisce direttive europee sulla sicurezza sul lavoro, introducendo obblighi per i datori di lavoro nella prevenzione dei rischi. Superata dal D.Lgs. 81/2008, questa norma rappresenta una base storica per la tutela della salute dei lavoratori, incluso l’OSS. Stabilisce l’importanza della formazione e dei dispositivi di protezione individuale (DPI), principi ancora oggi applicati."
+            },
+            {
+                title: "Legge 675/1996",
+                year: 1996,
+                brief: "Prima norma sulla privacy, tutela i dati personali.",
+                detail: "La Legge 31 dicembre 1996, n. 675, introduce la tutela dei dati personali in Italia, precursore del GDPR e del D.Lgs. 196/2003. Questa normativa obbliga gli operatori sanitari, inclusi gli OSS, a proteggere le informazioni sensibili dei pazienti, definendo responsabilità civili e penali in caso di violazione. È un pilastro per la gestione etica e legale dei dati nel SSN."
+            },
+            {
+                title: "D.Lgs. 229/1999 (Riforma Bindi)",
+                year: 1999,
+                brief: "Rafforza il SSN con prevenzione e integrazione socio-sanitaria.",
+                detail: "Il Decreto Legislativo 19 giugno 1999, n. 229, noto come Riforma Bindi, rafforza il SSN enfatizzando la prevenzione e l’integrazione tra servizi sanitari e sociali. Promulgato durante il governo D’Alema, introduce misure per migliorare l’efficienza e l’accessibilità delle cure. Per l’OSS, questa norma amplia il campo operativo, includendo compiti di prevenzione e assistenza in contesti socio-sanitari come RSA e domiciliari."
+            },
+            {
+                title: "Legge 328/2000",
+                year: 2000,
+                brief: "Legge-quadro per i servizi sociali.",
+                detail: "La Legge 8 novembre 2000, n. 328, è una legge-quadro che promuove l’integrazione socio-sanitaria, regolando i servizi sociali a livello nazionale. Definisce un sistema di assistenza territoriale che coinvolge Regioni e Comuni, includendo strutture come le RSA. Per l’OSS, è rilevante poiché delimita l’ambito di intervento nei servizi sociali, dove collaborano con altri professionisti per il benessere dei pazienti."
+            },
+            {
+                title: "Legge 3/2001",
+                year: 2001,
+                brief: "Delega per riformare il SSN e le professioni sanitarie.",
+                detail: "La Legge 1 febbraio 2001, n. 3, delega al governo la riforma del SSN e delle professioni sanitarie, influenzando la classificazione dell’OSS come figura socio-sanitaria. Questa norma mira a modernizzare il sistema sanitario, adattandolo alle nuove esigenze. Per l’OSS, è significativa poiché contribuisce a definire il loro ruolo giuridico e operativo all’interno del SSN."
+            },
+            {
+                title: "Legge 165/2001",
+                year: 2001,
+                brief: "Aggiorna le norme sul lavoro pubblico.",
+                detail: "La Legge 27 marzo 2001, n. 165, aggiorna le norme sul lavoro pubblico, regolando le condizioni lavorative dei dipendenti del SSN, inclusi gli OSS. Introduce disposizioni su contratti, turni e responsabilità, garantendo tutele specifiche. Per l’OSS, questa legge è importante per la definizione dei diritti e doveri come lavoratori pubblici."
+            },
+            {
+                title: "Legge 308/2001",
+                year: 2001,
+                brief: "Delega per razionalizzare il SSN.",
+                detail: "La Legge 15 novembre 2001, n. 308, delega al governo la razionalizzazione del SSN, mirando a migliorare l’efficienza gestionale delle ASL. Questa norma impatta indirettamente sull’OSS, definendo l’organizzazione delle strutture sanitarie dove operano, con un focus su ottimizzazione delle risorse e qualità dei servizi."
+            },
+            {
+                title: "Legge 3 aprile 2001, n. 120",
+                year: 2001,
+                brief: "Autorizza l’uso dei defibrillatori (DAE).",
+                detail: "La Legge 3 aprile 2001, n. 120, autorizza l’uso dei defibrillatori automatici esterni (DAE) da parte di personale non medico, previo addestramento. Questa norma amplia le competenze dell’OSS, che, se formato, può intervenire in situazioni di emergenza cardiaca, migliorando la risposta sanitaria nei contesti lavorativi."
+            },
+            {
+                title: "Legge 196/2003",
+                year: 2003,
+                brief: "Tutela i dati personali sanitari.",
+                detail: "La Legge 30 giugno 2003, n. 196, nota come Codice in materia di protezione dei dati personali, rafforza la tutela dei dati sanitari, aggiornando la Legge 675/1996 e armonizzandosi al GDPR. Obbliga l’OSS a garantire la riservatezza delle informazioni dei pazienti, con responsabilità civili e penali in caso di violazioni. È una norma cruciale per la gestione etica dei dati nel SSN."
+            },
+            {
+                title: "Legge 43/2006",
+                year: 2006,
+                brief: "Disciplina le professioni sanitarie.",
+                detail: "La Legge 1 febbraio 2006, n. 43, disciplina le professioni sanitarie, collocando l’OSS tra le figure socio-sanitarie senza albo professionale. Questa norma chiarisce il ruolo e le competenze dell’OSS, distinguendolo dalle professioni sanitarie regolamentate, e ne definisce l’importanza nel supportare il SSN."
+            },
+            {
+                title: "DPCM 12 gennaio 2017 (LEA)",
+                year: 2017,
+                brief: "Aggiorna i LEA con assistenza domiciliare.",
+                detail: "Il Decreto del Presidente del Consiglio dei Ministri del 12 gennaio 2017 aggiorna i Livelli Essenziali di Assistenza (LEA), includendo prestazioni come l’assistenza domiciliare e la riabilitazione. Per l’OSS, questa norma specifica i compiti da svolgere, come il supporto ai pazienti a domicilio, garantendo standard uniformi di cura nel SSN."
+            },
+            {
+                title: "Legge 24/2017 (Gelli-Bianco)",
+                year: 2017,
+                brief: "Riforma la responsabilità sanitaria.",
+                detail: "La Legge 8 marzo 2017, n. 24, nota come Legge Gelli-Bianco, riforma la responsabilità professionale degli operatori sanitari. Introduce obblighi di trasparenza e formazione, definendo la responsabilità civile e penale dell’OSS per errori commessi nell’esercizio delle funzioni. È fondamentale per l’OSS, poiché sottolinea l’importanza della competenza e della diligenza nel lavoro."
+            },
+            {
+                title: "D.Lgs. 101/2018",
+                year: 2018,
+                brief: "Armonizza il D.Lgs. 196/2003 al GDPR.",
+                detail: "Il Decreto Legislativo 31 agosto 2018, n. 101, armonizza il Codice sulla privacy (D.Lgs. 196/2003) al Regolamento UE 2016/679 (GDPR). Rafforza la protezione dei dati sanitari, imponendo all’OSS obblighi rigorosi nella gestione delle informazioni sensibili dei pazienti, con sanzioni in caso di violazioni. È essenziale per la conformità legale nel SSN."
+            }
+        ];
+
+        const regionalLaws = {
+            "valle-d-aosta": [
+                {
+                    title: "Legge Regionale 11/2008 e Deliberazione Giunta Regionale n. 1516/2003",
+                    detail: "La Legge Regionale 11/2008 regola i servizi socio-sanitari, definendo il ruolo dell’OSS in ospedali, RSA e servizi domiciliari nella Valle d’Aosta, con enfasi sull’integrazione socio-sanitaria in un territorio montano. La Deliberazione n. 1516/2003 recepisce l’Accordo Stato-Regioni 2001, stabilendo un percorso formativo di 1000 ore. L’OSS non può rilevare la glicemia autonomamente, poiché il prelievo capillare è considerato invasivo e riservato agli infermieri, salvo formazione aggiuntiva autorizzata dall’AUSL Valle d’Aosta.\n\n**Azienda Sanitaria**: L’AUSL Valle d’Aosta è l’unica azienda sanitaria regionale, nata con il D.Lgs. 502/1992 per gestire i servizi sanitari in una regione autonoma a statuto speciale. Sostituisce le precedenti USL istituite nel 1978, adattandosi alla piccola dimensione territoriale e centralizzando la gestione sanitaria sotto il controllo della Regione autonoma. È responsabile dei concorsi pubblici per OSS."
+                }
+            ],
+            "piemonte": [
+                {
+                    title: "Legge Regionale 10/2010 e Deliberazione Giunta Regionale n. 45-2015",
+                    detail: "La Legge Regionale 10/2010 organizza i servizi socio-sanitari territoriali, includendo l’OSS in RSA, ospedali e assistenza domiciliare, con focus sull’assistenza diretta. La Deliberazione n. 45-2015 aggiorna i percorsi formativi OSS (1000 ore), consentendo in alcuni casi (es. ASL TO3) il rilevamento della glicemia con formazione specifica e delega infermieristica, anche se non è una competenza standard. Senza delega, rimane di pertinenza infermieristica.\n\n**Azienda Sanitaria**: Azienda Zero Piemonte, istituita con la Legge Regionale 17/2016, coordina i concorsi unificati per le ASL piemontesi (es. ASL Torino, ASL Alessandria) e le AOU (es. AOU Città della Salute e della Scienza di Torino). Le ASL nascono nel 1992 con il D.Lgs. 502, mentre le AOU derivano dalla fusione di ospedali universitari con la riforma del 1999 (D.Lgs. 229). Azienda Zero è un’evoluzione per garantire efficienza e uniformità nei processi di selezione."
+                }
+            ],
+            "lombardia": [
+                {
+                    title: "Legge Regionale 33/2009 e Deliberazione Giunta Regionale n. VIII/005103 del 18/07/2007",
+                    detail: "La Legge Regionale 33/2009 disciplina l’accreditamento delle strutture sanitarie, includendo l’OSS nei servizi ospedalieri, RSA e ADI, con enfasi sulla continuità assistenziale. La Deliberazione VIII/005103 del 2007 autorizza l’OSS a effettuare il prelievo capillare per la glicemia, purché incluso nel percorso formativo (1000 ore) e sotto supervisione infermieristica, distinguendo la Lombardia da molte altre regioni.\n\n**Aziende Sanitarie**: Le ASST (Aziende Socio-Sanitarie Territoriali, es. ASST Niguarda) e le ATS (Agenzie di Tutela della Salute) sono state create con la Legge Regionale 23/2015. Le ASST integrano ospedali e servizi territoriali, sostituendo le vecchie AO e ASL, mentre le ATS gestiscono programmazione e concorsi aggregati. Questa riforma separa gestione ospedaliera (ASST) e controllo sanitario (ATS), ottimizzando il SSR lombardo."
+                }
+            ],
+            "trentino-alto-adige": [
+                {
+                    title: "Legge Provinciale Trento 7/2005 e Deliberazione Giunta Provinciale Bolzano n. 1476/2001",
+                    detail: "La Legge Provinciale 7/2005 (Trento) organizza i servizi sanitari, includendo l’OSS in ospedali e RSA con focus su anziani e disabili. La Deliberazione n. 1476/2001 (Bolzano) disciplina la formazione OSS (1000 ore). In entrambe le province autonome, l’OSS non può rilevare la glicemia autonomamente, essendo una competenza infermieristica, salvo formazione aggiuntiva.\n\n**Aziende Sanitarie**: L’APSS Trento (Azienda Provinciale per i Servizi Sanitari), nata con la Legge Provinciale 16/1995, e la SABES (Azienda Sanitaria dell’Alto Adige), istituita con la Legge Provinciale 7/1997 a Bolzano, gestiscono i concorsi. Queste aziende riflettono l’autonomia speciale della regione, creando enti sanitari indipendenti dal modello nazionale per rispondere alle esigenze locali."
+                }
+            ],
+            "veneto": [
+                {
+                    title: "Legge Regionale 20/2001 e Deliberazione Giunta Regionale n. 2230/2002",
+                    detail: "La Legge Regionale 20/2001 recepisce l’Accordo Stato-Regioni 2001, definendo il ruolo dell’OSS in ULSS, ospedali e RSA, con enfasi sulla collaborazione interdisciplinare. La Deliberazione n. 2230/2002 specifica che l’OSS può rilevare la glicemia solo sotto diretta supervisione infermieristica, non come competenza autonoma.\n\n**Azienda Sanitaria**: Azienda Zero, creata con la Legge Regionale 19/2016, centralizza i concorsi per le ULSS (es. ULSS 3 Serenissima) e le AO (es. AOUI Verona). Le ULSS nascono nel 1992 con il D.Lgs. 502; Azienda Zero è una risposta regionale per razionalizzare il SSR, unificando i bandi sotto un unico ente amministrativo."
+                }
+            ],
+            "friuli-venezia-giulia": [
+                {
+                    title: "Legge Regionale 17/2008 e Deliberazione Giunta Regionale n. 155/2002",
+                    detail: "La Legge Regionale 17/2008 regola il SSR, includendo l’OSS in ospedali, RSA e servizi domiciliari, con attenzione alla popolazione anziana. La Deliberazione n. 155/2002 disciplina la formazione OSS (1000 ore), riservando il rilevamento della glicemia agli infermieri, salvo disposizioni aziendali.\n\n**Aziende Sanitarie**: ASUFC (Azienda Sanitaria Universitaria Friuli Centrale) e ASUGI (Azienda Sanitaria Universitaria Giuliano Isontina), istituite con la Legge Regionale 27/2014, integrano ospedali e università. Queste aziende evolvono dalle ASL del 1992 per potenziare ricerca e assistenza, gestendo i concorsi per OSS."
+                }
+            ],
+            "liguria": [
+                {
+                    title: "Legge Regionale 41/2006 e Deliberazione Giunta Regionale n. 104/2002",
+                    detail: "La Legge Regionale 41/2006 organizza i servizi sanitari, includendo l’OSS in ospedali, RSA e ADI, con focus sui pazienti cronici. La Deliberazione n. 104/2002 recepisce l’Accordo Stato-Regioni, riservando la glicemia agli infermieri.\n\n**Aziende Sanitarie**: Le ASL Liguria (es. ASL 3 Genovese) nascono con il D.Lgs. 502/1992, evolvendo dalle USL per coprire il territorio ligure. Gestiscono i concorsi per OSS, adattandosi a una regione con forte presenza costiera e montana."
+                }
+            ],
+            "emilia-romagna": [
+                {
+                    title: "Legge Regionale 2/2003 e Deliberazione Giunta Regionale n. 564/2001",
+                    detail: "La Legge Regionale 2/2003 regola i servizi socio-sanitari, includendo l’OSS in ospedali, RSA e hospice. La Deliberazione n. 564/2001 consente all’OSS di rilevare la glicemia con formazione adeguata (1000 ore) e delega infermieristica, similmente alla Lombardia.\n\n**Aziende Sanitarie**: Le AUSL (es. AUSL Bologna) e le AOU (es. AOU Parma) nascono con il D.Lgs. 502/1992, integrate dalla Legge Regionale 29/2004. Queste aziende uniscono assistenza territoriale e ospedaliera, con un forte coordinamento regionale per i concorsi OSS."
+                }
+            ],
+            "toscana": [
+                {
+                    title: "Legge Regionale 41/2005 e Deliberazione Giunta Regionale n. 532/2001",
+                    detail: "La Legge Regionale 41/2005 regola il SSR, includendo l’OSS in ospedali, RSA e ADI, con focus sulla continuità assistenziale. La Deliberazione n. 532/2001 riserva la glicemia agli infermieri, salvo formazione aggiuntiva autorizzata dalle ASL.\n\n**Aziende Sanitarie**: Le ASL Toscana (Nord Ovest, Centro, Sud Est), istituite con la Legge Regionale 40/2005, razionalizzano le vecchie ASL in tre macro-aree. Gestiscono i concorsi OSS, semplificando la gestione sanitaria regionale."
+                }
+            ],
+            "umbria": [
+                {
+                    title: "Legge Regionale 9/2010 e Deliberazione Giunta Regionale n. 1071/2001",
+                    detail: "La Legge Regionale 9/2010 organizza i servizi sanitari e sociali, includendo l’OSS con attenzione agli anziani. La Deliberazione n. 1071/2001 riserva la glicemia agli infermieri.\n\n**Aziende Sanitarie**: Le USL Umbria (1 e 2) nascono con il D.Lgs. 502/1992, mantenute per la piccola dimensione regionale. Gestiscono i concorsi OSS con una struttura centralizzata."
+                }
+            ],
+            "marche": [
+                {
+                    title: "Legge Regionale 20/2003 e Deliberazione Giunta Regionale n. 1478/2001",
+                    detail: "La Legge Regionale 20/2003 definisce il SSR, includendo l’OSS in ospedali e RSA. La Deliberazione n. 1478/2001 riserva la glicemia agli infermieri, salvo formazione specifica.\n\n**Azienda Sanitaria**: L’ASUR Marche (Azienda Sanitaria Unica Regionale), creata con la Legge Regionale 13/2003, unifica le ASL marchigiane per ottimizzare risorse in una regione medio-piccola. Gestisce i concorsi OSS."
+                }
+            ],
+            "lazio": [
+                {
+                    title: "Legge Regionale 4/2003 e Deliberazione Giunta Regionale n. 403/2001",
+                    detail: "La Legge Regionale 4/2003 organizza i servizi sanitari, includendo l’OSS con attenzione alle aree urbane. La Deliberazione n. 403/2001 riserva la glicemia agli infermieri, salvo deleghe domiciliari.\n\n**Aziende Sanitarie**: Le ASL Roma (es. ASL Roma 1) e le AO (es. AO San Camillo) nascono con il D.Lgs. 502/1992, distinguendo servizi territoriali e ospedalieri. Gestiscono i concorsi OSS nel Lazio."
+                }
+            ],
+            "abruzzo": [
+                {
+                    title: "Legge Regionale 6/2007 e Deliberazione Giunta Regionale n. 602/2001",
+                    detail: "La Legge Regionale 6/2007 regola i servizi sanitari territoriali, includendo l’OSS con focus su aree rurali. La Deliberazione n. 602/2001 riserva la glicemia agli infermieri.\n\n**Aziende Sanitarie**: Le ASL Abruzzo (es. ASL L’Aquila) nascono con il D.Lgs. 502/1992, evolvendo dalle USL per coprire un territorio montuoso. Gestiscono i concorsi OSS."
+                }
+            ],
+            "molise": [
+                {
+                    title: "Legge Regionale 13/2005 e Deliberazione Giunta Regionale n. 845/2001",
+                    detail: "La Legge Regionale 13/2005 organizza i servizi socio-sanitari, includendo l’OSS con attenzione agli anziani. La Deliberazione n. 845/2001 riserva la glicemia agli infermieri.\n\n**Azienda Sanitaria**: L’ASREM (Azienda Sanitaria Regionale del Molise), creata con la Legge Regionale 18/2005, unifica le ASL molisane per gestire una regione piccola con risorse limitate. Gestisce i concorsi OSS."
+                }
+            ],
+            "campania": [
+                {
+                    title: "Legge Regionale 11/2007 e Deliberazione Giunta Regionale n. 3955/2001",
+                    detail: "La Legge Regionale 11/2007 regola le RSA e i compiti dell’OSS, con enfasi sulle emergenze sanitarie. La Deliberazione n. 3955/2001 riserva la glicemia agli infermieri.\n\n**Aziende Sanitarie**: Le ASL Campania (es. ASL Napoli 1) nascono con il D.Lgs. 502/1992, adattandosi a un territorio densamente popolato. Gestiscono i concorsi OSS."
+                }
+            ],
+            "puglia": [
+                {
+                    title: "Legge Regionale 19/2006 e Deliberazione Giunta Regionale n. 1412/2001",
+                    detail: "La Legge Regionale 19/2006 definisce il SSR, includendo l’OSS con attenzione agli anziani. La Deliberazione n. 1412/2001 riserva la glicemia agli infermieri.\n\n**Aziende Sanitarie**: Le ASL Puglia (es. ASL Bari) nascono con il D.Lgs. 502/1992, evolvendo dalle USL per garantire servizi in una regione estesa. Gestiscono i concorsi OSS."
+                }
+            ],
+            "basilicata": [
+                {
+                    title: "Legge Regionale 4/2007 e Deliberazione Giunta Regionale n. 1098/2001",
+                    detail: "La Legge Regionale 4/2007 regola i servizi sanitari e sociali, includendo l’OSS in aree rurali. La Deliberazione n. 1098/2001 riserva la glicemia agli infermieri.\n\n**Aziende Sanitarie**: L’ASM (Matera) e l’ASL Potenza nascono con il D.Lgs. 502/1992, coprendo nord e sud della regione. Gestiscono i concorsi OSS."
+                }
+            ],
+            "calabria": [
+                {
+                    title: "Legge Regionale 11/2004 e Deliberazione Giunta Regionale n. 503/2001",
+                    detail: "La Legge Regionale 11/2004 organizza i servizi sanitari, includendo l’OSS con enfasi sulle emergenze. La Deliberazione n. 503/2001 riserva la glicemia agli infermieri.\n\n**Aziende Sanitarie**: Le ASP Calabria (es. ASP Cosenza), create con la Legge Regionale 11/2004, decentralizzano la gestione sanitaria provinciale. Gestiscono i concorsi OSS."
+                }
+            ],
+            "sicilia": [
+                {
+                    title: "Legge Regionale 5/2009 e Deliberazione Giunta Regionale n. 308/2001",
+                    detail: "La Legge Regionale 5/2009 organizza i servizi socio-sanitari, includendo l’OSS con attenzione agli anziani. La Deliberazione n. 308/2001 riserva la glicemia agli infermieri.\n\n**Aziende Sanitarie**: Le ASP Sicilia (es. ASP Palermo), istituite con la Legge Regionale 5/2009, adattano il SSR all’autonomia speciale siciliana. Gestiscono i concorsi OSS."
+                }
+            ],
+            "sardegna": [
+                {
+                    title: "Legge Regionale 23/2005 e Deliberazione Giunta Regionale n. 42/2001",
+                    detail: "La Legge Regionale 23/2005 regola il SSR, includendo l’OSS in aree rurali e insulari. La Deliberazione n. 42/2001 riserva la glicemia agli infermieri.\n\n**Azienda Sanitaria**: L’ATS Sardegna (Azienda Tutela Salute), creata con la Legge Regionale 17/2016, unifica le ASL sarde per ottimizzare risorse in una regione insulare. Gestisce i concorsi OSS."
+                }
+            ]
+        };
+
+        // Ordinamento crescente per anno
+        nationalLaws.sort((a, b) => a.year - b.year);
+
+        function renderNationalLaws(filteredLaws = nationalLaws) {
+            const grid = document.getElementById("lawsGrid");
+            const regionsGrid = document.getElementById("regionsGrid");
+            grid.innerHTML = "";
+            filteredLaws.forEach(law => {
+                const card = document.createElement("div");
+                card.classList.add("law-card");
+                card.innerHTML = `
+                    <h3>${law.title}</h3>
+                    <p>${law.brief}</p>
+                `;
+                card.addEventListener("click", () => showModal(law.title, law.detail));
+                grid.appendChild(card);
+            });
+            grid.style.display = "grid";
+            regionsGrid.style.display = "none";
+            document.getElementById("searchBar").style.display = "flex";
+        }
+
+        function renderRegions() {
+            const grid = document.getElementById("lawsGrid");
+            const regionsGrid = document.getElementById("regionsGrid");
+            regionsGrid.innerHTML = "";
+            const regions = Object.keys(regionalLaws);
+            regions.forEach(region => {
+                const box = document.createElement("div");
+                box.classList.add("region-box");
+                box.innerHTML = `<span>${region.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>`;
+                box.addEventListener("click", () => {
+                    const laws = regionalLaws[region];
+                    const detailText = laws.map(law => `${law.title}: ${law.detail}`).join("\n\n");
+                    showModal(`Leggi Regionali - ${region.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}`, detailText);
+                });
+                regionsGrid.appendChild(box);
+            });
+            grid.style.display = "none";
+            regionsGrid.style.display = "grid";
+            document.getElementById("searchBar").style.display = "none";
+        }
+
+        function showModal(title, detail) {
+            const modal = document.getElementById("lawModal");
+            const modalTitle = document.getElementById("modalTitle");
+            const modalDetail = document.getElementById("modalDetail");
+            modalTitle.textContent = title;
+            modalDetail.textContent = detail;
+            modal.style.display = "flex";
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("lawModal");
+            modal.style.display = "none";
+        }
+
+        function filterLaws() {
+            const query = document.getElementById("searchInput").value.toLowerCase();
+            const filtered = nationalLaws.filter(law => 
+                law.title.toLowerCase().includes(query) || 
+                law.brief.toLowerCase().includes(query) || 
+                law.detail.toLowerCase().includes(query)
+            );
+            renderNationalLaws(filtered);
+        }
+
+        document.getElementById("ssnBox").addEventListener("click", () => renderNationalLaws());
+        document.getElementById("ssrBox").addEventListener("click", renderRegions);
+        document.getElementById("searchButton").addEventListener("click", filterLaws);
+        document.getElementById("searchInput").addEventListener("keyup", (e) => {
+            if (e.key === "Enter") filterLaws();
+        });
+        document.getElementById("closeModal").addEventListener("click", closeModal);
+
+        window.onload = () => {
+            // Stato iniziale: niente visibile finché non si clicca
+        };
+    </script>
+</body>
+</html>
