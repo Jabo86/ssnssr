@@ -193,6 +193,7 @@
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.2);
             position: relative;
+            white-space: pre-wrap;
         }
 
         .modal-content h2 {
@@ -220,6 +221,200 @@
         .close-button:hover {
             transform: scale(1.2);
         }
+
+        /* Stili per la sezione Quiz */
+        .quiz-section {
+            background: rgba(20, 40, 60, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+            margin-bottom: 50px;
+            border: 1px solid #00eaff;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        .quiz-section h2 {
+            color: #00eaff;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 0 5px #00eaff;
+        }
+
+        .quiz-container {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .quiz-selector {
+            margin-bottom: 20px;
+        }
+
+        .quiz-selector select {
+            padding: 10px;
+            font-size: 1.2em;
+            background: rgba(30, 50, 70, 0.95);
+            color: #e0e0e0;
+            border: 1px solid #00eaff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .quiz-timer {
+            font-size: 1.5em;
+            color: #00eaff;
+            margin-bottom: 20px;
+        }
+
+        .quiz-balls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-ball {
+            width: 40px;
+            height: 40px;
+            background: rgba(30, 50, 70, 0.95);
+            border: 2px solid #00eaff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
+            color: #e0e0e0;
+            transition: background 0.3s ease;
+        }
+
+        .quiz-ball.correct {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        .quiz-ball.incorrect {
+            background: #ff0000;
+            color: #000;
+            box-shadow: 0 0 10px #ff0000;
+        }
+
+        .quiz-question {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #00eaff;
+        }
+
+        .quiz-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .quiz-option {
+            background: rgba(30, 50, 70, 0.95);
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: 1px solid #00eaff;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 1.1em;
+        }
+
+        .quiz-option:hover {
+            background: rgba(0, 212, 255, 0.3);
+        }
+
+        .quiz-option.disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .quiz-feedback {
+            margin-top: 20px;
+            font-size: 1.2em;
+            display: none;
+        }
+
+        .correct {
+            color: #00ff00;
+        }
+
+        .incorrect {
+            color: #ff0000;
+        }
+
+        .quiz-result {
+            margin-top: 20px;
+            font-size: 1.5em;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            color: #00eaff;
+        }
+
+        .retry-button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: #00eaff;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: none;
+        }
+
+        .retry-button:hover {
+            background: #3498db;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 20px 0;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1em;
+        }
+
+        @media (max-width: 768px) {
+            .sections {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .section-box {
+                width: 100%;
+            }
+
+            .quiz-options {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .quiz-ball {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8em;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .quiz-section h2 {
+                font-size: 2em;
+            }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
@@ -245,6 +440,31 @@
 
         <div class="laws-grid" id="lawsGrid"></div>
         <div class="regions-grid" id="regionsGrid"></div>
+
+        <!-- Sezione Quiz -->
+        <section class="quiz-section" id="quiz">
+            <h2>Quiz: Testa le Tue Conoscenze su SSN e SSR</h2>
+            <p>Seleziona un quiz e rispondi alle 30 domande entro 30 minuti. Le palline si illumineranno man mano che procedi!</p>
+            <div class="quiz-container">
+                <div class="quiz-selector">
+                    <select id="quiz-select" onchange="selectQuiz()">
+                        <option value="0">Seleziona un Quiz</option>
+                        <option value="1">Quiz 1</option>
+                        <option value="2">Quiz 2</option>
+                        <option value="3">Quiz 3</option>
+                        <option value="4">Quiz 4</option>
+                        <option value="5">Quiz 5</option>
+                    </select>
+                </div>
+                <div class="quiz-timer" id="quiz-timer" style="display: none;">Tempo rimanente: 30:00</div>
+                <div class="quiz-balls" id="quiz-balls" style="display: none;"></div>
+                <div class="quiz-question" id="quiz-question"></div>
+                <div class="quiz-options" id="quiz-options"></div>
+                <div class="quiz-feedback" id="quiz-feedback"></div>
+                <div class="quiz-result" id="quiz-result"></div>
+                <button class="retry-button" id="retry-button">Riprova</button>
+            </div>
+        </section>
     </div>
 
     <div class="modal" id="lawModal">
@@ -254,6 +474,10 @@
             <p id="modalDetail"></p>
         </div>
     </div>
+
+    <footer>
+        <p>© 2025 Normative SSN e SSR - Tutti i diritti riservati</p>
+    </footer>
 
     <script>
         const nationalLaws = [
@@ -601,7 +825,7 @@
                 box.innerHTML = `<span>${region.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>`;
                 box.addEventListener("click", () => {
                     const laws = regionalLaws[region];
-                    const detailText = laws.map(law => `${law.title}: ${law.detail}`).join("\n\n");
+                    const detailText = laws.map(law => `${law.title}:\n${law.detail}`).join("\n\n");
                     showModal(`Leggi Regionali - ${region.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}`, detailText);
                 });
                 regionsGrid.appendChild(box);
@@ -643,8 +867,305 @@
         });
         document.getElementById("closeModal").addEventListener("click", closeModal);
 
+        // Quiz Data
+        const allQuestions = [
+            // Quiz 1
+            [
+                { question: "Quale legge ha istituito il Servizio Sanitario Nazionale (SSN) in Italia?", options: ["Legge 180/1978", "Legge 833/1978", "D.Lgs. 502/1992", "Legge 104/1992"], correct: "Legge 833/1978" },
+                { question: "In Piemonte, l’OSS può rilevare la glicemia autonomamente senza delega infermieristica?", options: ["Sì, sempre", "No, mai", "Solo con delega", "Solo in ospedale"], correct: "Solo con delega" },
+                { question: "Quale normativa ha introdotto i Livelli Essenziali di Assistenza (LEA)?", options: ["Legge 833/1978", "D.Lgs. 502/1992", "Legge 328/2000", "DPCM 12 gennaio 2017"], correct: "D.Lgs. 502/1992" },
+                { question: "Quale legge regionale definisce il ruolo dell’OSS nei servizi domiciliari in Valle d’Aosta?", options: ["Legge Regionale 10/2010", "Legge Regionale 11/2008", "Legge Regionale 33/2009", "Legge Regionale 20/2001"], correct: "Legge Regionale 11/2008" },
+                { question: "Quale ente coordina i concorsi OSS in Piemonte?", options: ["ASL Torino", "AOU Parma", "Azienda Zero Piemonte", "ATS Sardegna"], correct: "Azienda Zero Piemonte" },
+                { question: "Quale legge ha istituito i medici condotti?", options: ["Legge 833/1978", "Legge 1888, n. 5849", "Legge 194/1978", "D.Lgs. 502/1992"], correct: "Legge 1888, n. 5849" },
+                { question: "Quale normativa regola le professioni sanitarie come medici e farmacisti?", options: ["Legge 1890, n. 6972", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1890, n. 6972" },
+                { question: "Quale legge ha centralizzato gli ospedali durante il fascismo?", options: ["Legge 1943, n. 138", "Legge 833/1978", "D.Lgs. 502/1992", "Legge 1968, n. 132"], correct: "Legge 1943, n. 138" },
+                { question: "Quale normativa post-bellica ha riorganizzato i servizi sanitari?", options: ["Legge 1945, n. 417", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1945, n. 417" },
+                { question: "Quale pubblicazione ha rafforzato l’art. 32 della Costituzione?", options: ["GU n. 298 del 1947", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "GU n. 298 del 1947" },
+                { question: "Quale legge ha istituito il Ministero della Sanità?", options: ["Legge 1958, n. 296", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1958, n. 296" },
+                { question: "Quale legge ha trasformato gli ospedali in enti pubblici autonomi?", options: ["Legge 1968, n. 132", "Legge 833/1978", "D.Lgs. 502/1992", "Legge 180/1978"], correct: "Legge 1968, n. 132" },
+                { question: "Quale normativa tutela i diritti dei lavoratori sanitari?", options: ["Legge 1970, n. 300", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1970, n. 300" },
+                { question: "Quale DPR ha avviato il decentramento sanitario?", options: ["DPR 1972, n. 4", "DPR 616/1977", "Legge 833/1978", "D.Lgs. 502/1992"], correct: "DPR 1972, n. 4" },
+                { question: "Quale legge ha riformato le mutue?", options: ["Legge 386/1974", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 386/1974" },
+                { question: "Quale legge ha istituito i consultori familiari?", options: ["Legge 405/1975", "Legge 833/1978", "Legge 180/1978", "Legge 194/1978"], correct: "Legge 405/1975" },
+                { question: "Quale DPR ha completato il decentramento sanitario?", options: ["DPR 616/1977", "DPR 1972, n. 4", "Legge 833/1978", "D.Lgs. 502/1992"], correct: "DPR 616/1977" },
+                { question: "Quale legge ha chiuso i manicomi?", options: ["Legge 180/1978", "Legge 833/1978", "Legge 194/1978", "Legge 104/1992"], correct: "Legge 180/1978" },
+                { question: "Quale legge regola l’interruzione volontaria di gravidanza?", options: ["Legge 194/1978", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 194/1978" },
+                { question: "Quale legge tutela i diritti dei disabili?", options: ["Legge 104/1992", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "Legge 104/1992" },
+                { question: "Quale legge ha razionalizzato la pubblica amministrazione?", options: ["Legge 421/1992", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "Legge 421/1992" },
+                { question: "Quale normativa ha introdotto l’aziendalizzazione delle ASL?", options: ["D.Lgs. 502/1992", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 502/1992" },
+                { question: "Quale legge ha introdotto obblighi di sicurezza sul lavoro?", options: ["Legge 626/1994", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 626/1994" },
+                { question: "Quale legge ha tutelato i dati personali?", options: ["Legge 675/1996", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 675/1996" },
+                { question: "Quale normativa ha rafforzato la prevenzione nel SSN?", options: ["D.Lgs. 229/1999", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 229/1999" },
+                { question: "Quale legge regola i servizi sociali?", options: ["Legge 328/2000", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 328/2000" },
+                { question: "Quale legge ha definito l’OSS come figura socio-sanitaria?", options: ["Legge 3/2001", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 3/2001" },
+                { question: "Quale legge autorizza l’uso dei defibrillatori?", options: ["Legge 120/2001", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 120/2001" },
+                { question: "Quale legge ha rafforzato la protezione dei dati sanitari?", options: ["Legge 196/2003", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 196/2003" },
+                { question: "Quale legge ha riformato la responsabilità sanitaria?", options: ["Legge 24/2017", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 24/2017" }
+            ],
+            // Quiz 2
+            [
+                { question: "Quale legge ha chiuso i manicomi, introducendo i Centri di Salute Mentale?", options: ["Legge 194/1978", "Legge 180/1978", "Legge 833/1978", "Legge 104/1992"], correct: "Legge 180/1978" },
+                { question: "In Veneto, l’OSS può rilevare la glicemia senza supervisione infermieristica?", options: ["Sì, sempre", "No, solo con supervisione", "Solo in RSA", "Mai"], correct: "No, solo con supervisione" },
+                { question: "Quale legge regionale ha istituito Azienda Zero in Veneto?", options: ["Legge Regionale 20/2001", "Legge Regionale 19/2016", "Legge Regionale 17/2008", "Legge Regionale 41/2006"], correct: "Legge Regionale 19/2016" },
+                { question: "Quale normativa tutela i dati personali sanitari?", options: ["Legge 675/1996", "Legge 833/1978", "D.Lgs. 502/1992", "Legge 300/1970"], correct: "Legge 675/1996" },
+                { question: "Quale ente gestisce i concorsi OSS in Friuli-Venezia Giulia?", options: ["ASL Liguria", "ASUFC", "ASUR Marche", "APSS Trento"], correct: "ASUFC" },
+                { question: "Quale legge ha istituito i medici condotti?", options: ["Legge 833/1978", "Legge 1888, n. 5849", "Legge 194/1978", "D.Lgs. 502/1992"], correct: "Legge 1888, n. 5849" },
+                { question: "Quale normativa regola le professioni sanitarie come medici e farmacisti?", options: ["Legge 1890, n. 6972", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1890, n. 6972" },
+                { question: "Quale legge ha centralizzato gli ospedali durante il fascismo?", options: ["Legge 1943, n. 138", "Legge 833/1978", "D.Lgs. 502/1992", "Legge 1968, n. 132"], correct: "Legge 1943, n. 138" },
+                { question: "Quale normativa post-bellica ha riorganizzato i servizi sanitari?", options: ["Legge 1945, n. 417", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1945, n. 417" },
+                { question: "Quale pubblicazione ha rafforzato l’art. 32 della Costituzione?", options: ["GU n. 298 del 1947", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "GU n. 298 del 1947" },
+                { question: "Quale legge ha istituito il Ministero della Sanità?", options: ["Legge 1958, n. 296", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1958, n. 296" },
+                { question: "Quale legge ha trasformato gli ospedali in enti pubblici autonomi?", options: ["Legge 1968, n. 132", "Legge 833/1978", "D.Lgs. 502/1992", "Legge 180/1978"], correct: "Legge 1968, n. 132" },
+                { question: "Quale normativa tutela i diritti dei lavoratori sanitari?", options: ["Legge 1970, n. 300", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1970, n. 300" },
+                { question: "Quale DPR ha avviato il decentramento sanitario?", options: ["DPR 1972, n. 4", "DPR 616/1977", "Legge 833/1978", "D.Lgs. 502/1992"], correct: "DPR 1972, n. 4" },
+                { question: "Quale legge ha riformato le mutue?", options: ["Legge 386/1974", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 386/1974" },
+                { question: "Quale legge ha istituito i consultori familiari?", options: ["Legge 405/1975", "Legge 833/1978", "Legge 180/1978", "Legge 194/1978"], correct: "Legge 405/1975" },
+                { question: "Quale DPR ha completato il decentramento sanitario?", options: ["DPR 616/1977", "DPR 1972, n. 4", "Legge 833/1978", "D.Lgs. 502/1992"], correct: "DPR 616/1977" },
+                { question: "Quale legge regola l’interruzione volontaria di gravidanza?", options: ["Legge 194/1978", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 194/1978" },
+                { question: "Quale legge tutela i diritti dei disabili?", options: ["Legge 104/1992", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "Legge 104/1992" },
+                { question: "Quale legge ha razionalizzato la pubblica amministrazione?", options: ["Legge 421/1992", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "Legge 421/1992" },
+                { question: "Quale normativa ha introdotto l’aziendalizzazione delle ASL?", options: ["D.Lgs. 502/1992", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 502/1992" },
+                { question: "Quale legge ha introdotto obblighi di sicurezza sul lavoro?", options: ["Legge 626/1994", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 626/1994" },
+                { question: "Quale normativa ha rafforzato la prevenzione nel SSN?", options: ["D.Lgs. 229/1999", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 229/1999" },
+                { question: "Quale legge regola i servizi sociali?", options: ["Legge 328/2000", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 328/2000" },
+                { question: "Quale legge ha definito l’OSS come figura socio-sanitaria?", options: ["Legge 3/2001", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 3/2001" },
+                { question: "Quale legge autorizza l’uso dei defibrillatori?", options: ["Legge 120/2001", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 120/2001" },
+                { question: "Quale legge ha rafforzato la protezione dei dati sanitari?", options: ["Legge 196/2003", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 196/2003" },
+                { question: "Quale legge ha riformato la responsabilità sanitaria?", options: ["Legge 24/2017", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 24/2017" },
+                { question: "Quale normativa armonizza al GDPR?", options: ["D.Lgs. 101/2018", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 101/2018" },
+                { question: "In Lombardia, l’OSS può rilevare la glicemia?", options: ["Sì, con supervisione", "No, mai", "Solo in RSA", "Sì, sempre"], correct: "Sì, con supervisione" }
+              ],
+            // Quiz 3
+            [
+                { question: "Quale legge ha riformato la responsabilità professionale sanitaria?", options: ["Legge 24/2017", "Legge 833/1978", "D.Lgs. 502/1992", "Legge 180/1978"], correct: "Legge 24/2017" },
+                { question: "In Toscana, la glicemia è una competenza esclusiva degli infermieri?", options: ["Sì, sempre", "No, con formazione", "Solo in ospedale", "No, mai"], correct: "Sì, sempre" },
+                { question: "Quale legge regionale ha razionalizzato le ASL toscane in tre macro-aree?", options: ["Legge Regionale 41/2005", "Legge Regionale 40/2005", "Legge Regionale 9/2010", "Legge Regionale 20/2003"], correct: "Legge Regionale 40/2005" },
+                { question: "Quale normativa ha avviato il decentramento sanitario alle Regioni?", options: ["Legge 833/1978", "DPR 616/1977", "D.Lgs. 502/1992", "Legge 104/1992"], correct: "DPR 616/1977" },
+                { question: "Quale ente gestisce i concorsi OSS in Umbria?", options: ["ASL Roma", "USL Umbria", "ASP Calabria", "ATS Sardegna"], correct: "USL Umbria" },
+                { question: "Quale legge ha istituito i medici condotti?", options: ["Legge 833/1978", "Legge 1888, n. 5849", "Legge 194/1978", "D.Lgs. 502/1992"], correct: "Legge 1888, n. 5849" },
+                { question: "Quale normativa regola le professioni sanitarie come medici e farmacisti?", options: ["Legge 1890, n. 6972", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1890, n. 6972" },
+                { question: "Quale legge ha centralizzato gli ospedali durante il fascismo?", options: ["Legge 1943, n. 138", "Legge 833/1978", "D.Lgs. 502/1992", "Legge 1968, n. 132"], correct: "Legge 1943, n. 138" },
+                { question: "Quale normativa post-bellica ha riorganizzato i servizi sanitari?", options: ["Legge 1945, n. 417", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1945, n. 417" },
+                { question: "Quale pubblicazione ha rafforzato l’art. 32 della Costituzione?", options: ["GU n. 298 del 1947", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "GU n. 298 del 1947" },
+                { question: "Quale legge ha istituito il Ministero della Sanità?", options: ["Legge 1958, n. 296", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1958, n. 296" },
+                { question: "Quale legge ha trasformato gli ospedali in enti pubblici autonomi?", options: ["Legge 1968, n. 132", "Legge 833/1978", "D.Lgs. 502/1992", "Legge 180/1978"], correct: "Legge 1968, n. 132" },
+                { question: "Quale normativa tutela i diritti dei lavoratori sanitari?", options: ["Legge 1970, n. 300", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1970, n. 300" },
+                { question: "Quale DPR ha avviato il decentramento sanitario?", options: ["DPR 1972, n. 4", "DPR 616/1977", "Legge 833/1978", "D.Lgs. 502/1992"], correct: "DPR 1972, n. 4" },
+                { question: "Quale legge ha riformato le mutue?", options: ["Legge 386/1974", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 386/1974" },
+                { question: "Quale legge ha istituito i consultori familiari?", options: ["Legge 405/1975", "Legge 833/1978", "Legge 180/1978", "Legge 194/1978"], correct: "Legge 405/1975" },
+                { question: "Quale DPR ha completato il decentramento sanitario?", options: ["DPR 616/1977", "DPR 1972, n. 4", "Legge 833/1978", "D.Lgs. 502/1992"], correct: "DPR 616/1977" },
+                { question: "Quale legge ha chiuso i manicomi?", options: ["Legge 180/1978", "Legge 833/1978", "Legge 194/1978", "Legge 104/1992"], correct: "Legge 180/1978" },
+                { question: "Quale legge regola l’interruzione volontaria di gravidanza?", options: ["Legge 194/1978", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 194/1978" },
+                { question: "Quale legge tutela i diritti dei disabili?", options: ["Legge 104/1992", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "Legge 104/1992" },
+                { question: "Quale legge ha razionalizzato la pubblica amministrazione?", options: ["Legge 421/1992", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "Legge 421/1992" },
+                { question: "Quale normativa ha introdotto l’aziendalizzazione delle ASL?", options: ["D.Lgs. 502/1992", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 502/1992" },
+                { question: "Quale legge ha introdotto obblighi di sicurezza sul lavoro?", options: ["Legge 626/1994", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 626/1994" },
+                { question: "Quale normativa ha rafforzato la prevenzione nel SSN?", options: ["D.Lgs. 229/1999", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 229/1999" },
+                { question: "Quale legge regola i servizi sociali?", options: ["Legge 328/2000", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 328/2000" },
+                { question: "Quale legge ha definito l’OSS come figura socio-sanitaria?", options: ["Legge 3/2001", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 3/2001" },
+                { question: "Quale legge autorizza l’uso dei defibrillatori?", options: ["Legge 120/2001", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 120/2001" },
+                { question: "Quale legge ha rafforzato la protezione dei dati sanitari?", options: ["Legge 196/2003", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 196/2003" },
+                { question: "Quale normativa armonizza al GDPR?", options: ["D.Lgs. 101/2018", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 101/2018" },
+                { question: "In Emilia-Romagna, l’OSS può rilevare la glicemia?", options: ["Sì, con delega", "No, mai", "Solo in RSA", "Sì, sempre"], correct: "Sì, con delega" }
+            ],
+            // Quiz 4
+            [
+                { question: "Quale legge ha istituito i consultori familiari?", options: ["Legge 405/1975", "Legge 833/1978", "Legge 180/1978", "Legge 194/1978"], correct: "Legge 405/1975" },
+                { question: "In Lazio, l’OSS può rilevare la glicemia in ambito domiciliare?", options: ["Sì, sempre", "No, mai", "Solo con delega", "Solo in RSA"], correct: "Solo con delega" },
+                { question: "Quale legge regionale organizza i servizi sanitari nel Lazio?", options: ["Legge Regionale 4/2003", "Legge Regionale 11/2007", "Legge Regionale 5/2009", "Legge Regionale 23/2005"], correct: "Legge Regionale 4/2003" },
+                { question: "Quale normativa ha trasformato gli ospedali in enti autonomi?", options: ["Legge 833/1978", "Legge 132/1968", "D.Lgs. 502/1992", "Legge 300/1970"], correct: "Legge 132/1968" },
+                { question: "Quale ente gestisce i concorsi OSS in Sicilia?", options: ["ASP Palermo", "ASL Bari", "ASREM Molise", "AUSL Bologna"], correct: "ASP Palermo" },
+                { question: "Quale legge ha istituito i medici condotti?", options: ["Legge 833/1978", "Legge 1888, n. 5849", "Legge 194/1978", "D.Lgs. 502/1992"], correct: "Legge 1888, n. 5849" },
+                { question: "Quale normativa regola le professioni sanitarie come medici e farmacisti?", options: ["Legge 1890, n. 6972", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1890, n. 6972" },
+                { question: "Quale legge ha centralizzato gli ospedali durante il fascismo?", options: ["Legge 1943, n. 138", "Legge 833/1978", "D.Lgs. 502/1992", "Legge 1968, n. 132"], correct: "Legge 1943, n. 138" },
+                { question: "Quale normativa post-bellica ha riorganizzato i servizi sanitari?", options: ["Legge 1945, n. 417", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1945, n. 417" },
+                { question: "Quale pubblicazione ha rafforzato l’art. 32 della Costituzione?", options: ["GU n. 298 del 1947", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "GU n. 298 del 1947" },
+                { question: "Quale legge ha istituito il Ministero della Sanità?", options: ["Legge 1958, n. 296", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1958, n. 296" },
+                { question: "Quale normativa tutela i diritti dei lavoratori sanitari?", options: ["Legge 1970, n. 300", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1970, n. 300" },
+                { question: "Quale DPR ha avviato il decentramento sanitario?", options: ["DPR 1972, n. 4", "DPR 616/1977", "Legge 833/1978", "D.Lgs. 502/1992"], correct: "DPR 1972, n. 4" },
+                { question: "Quale legge ha riformato le mutue?", options: ["Legge 386/1974", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 386/1974" },
+                { question: "Quale DPR ha completato il decentramento sanitario?", options: ["DPR 616/1977", "DPR 1972, n. 4", "Legge 833/1978", "D.Lgs. 502/1992"], correct: "DPR 616/1977" },
+                { question: "Quale legge ha chiuso i manicomi?", options: ["Legge 180/1978", "Legge 833/1978", "Legge 194/1978", "Legge 104/1992"], correct: "Legge 180/1978" },
+                { question: "Quale legge regola l’interruzione volontaria di gravidanza?", options: ["Legge 194/1978", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 194/1978" },
+                { question: "Quale legge tutela i diritti dei disabili?", options: ["Legge 104/1992", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "Legge 104/1992" },
+                { question: "Quale legge ha razionalizzato la pubblica amministrazione?", options: ["Legge 421/1992", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "Legge 421/1992" },
+                { question: "Quale normativa ha introdotto l’aziendalizzazione delle ASL?", options: ["D.Lgs. 502/1992", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 502/1992" },
+                { question: "Quale legge ha introdotto obblighi di sicurezza sul lavoro?", options: ["Legge 626/1994", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 626/1994" },
+                { question: "Quale normativa ha rafforzato la prevenzione nel SSN?", options: ["D.Lgs. 229/1999", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 229/1999" },
+                { question: "Quale legge regola i servizi sociali?", options: ["Legge 328/2000", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 328/2000" },
+                { question: "Quale legge ha definito l’OSS come figura socio-sanitaria?", options: ["Legge 3/2001", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 3/2001" },
+                { question: "Quale legge autorizza l’uso dei defibrillatori?", options: ["Legge 120/2001", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 120/2001" },
+                { question: "Quale legge ha rafforzato la protezione dei dati sanitari?", options: ["Legge 196/2003", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 196/2003" },
+                { question: "Quale normativa armonizza al GDPR?", options: ["D.Lgs. 101/2018", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 101/2018" },
+                { question: "In Sicilia, l’OSS può rilevare la glicemia?", options: ["No, mai", "Sì, con delega", "Solo in RSA", "Sì, sempre"], correct: "No, mai" },
+                { question: "Quale ente gestisce i concorsi OSS in Sardegna?", options: ["ATS Sardegna", "ASL Napoli", "ASST Niguarda", "ULSS 3"], correct: "ATS Sardegna" },
+                { question: "Quale legge regionale ha creato l’ATS Sardegna?", options: ["Legge Regionale 17/2016", "Legge Regionale 23/2005", "Legge Regionale 11/2007", "Legge Regionale 20/2003"], correct: "Legge Regionale 17/2016" }
+            ],
+            // Quiz 5
+            [
+                { question: "Quale legge ha riformato il SSN con la prevenzione socio-sanitaria?", options: ["Legge 833/1978", "D.Lgs. 229/1999", "Legge 328/2000", "Legge 104/1992"], correct: "D.Lgs. 229/1999" },
+                { question: "In Sardegna, l’OSS può rilevare la glicemia autonomamente?", options: ["Sì, sempre", "No, mai", "Solo con formazione", "Solo in ospedale"], correct: "No, mai" },
+                { question: "Quale legge regionale ha creato l’ATS Sardegna?", options: ["Legge Regionale 23/2005", "Legge Regionale 17/2016", "Legge Regionale 11/2007", "Legge Regionale 20/2003"], correct: "Legge Regionale 17/2016" },
+                { question: "Quale normativa tutela i diritti dei lavoratori sanitari?", options: ["Legge 833/1978", "Legge 300/1970", "D.Lgs. 502/1992", "Legge 180/1978"], correct: "Legge 300/1970" },
+                { question: "Quale ente gestisce i concorsi OSS in Campania?", options: ["ASL Napoli 1", "ASST Niguarda", "ULSS 3 Serenissima", "ASM Matera"], correct: "ASL Napoli 1" },
+                { question: "Quale legge ha istituito i medici condotti?", options: ["Legge 833/1978", "Legge 1888, n. 5849", "Legge 194/1978", "D.Lgs. 502/1992"], correct: "Legge 1888, n. 5849" },
+                { question: "Quale normativa regola le professioni sanitarie come medici e farmacisti?", options: ["Legge 1890, n. 6972", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1890, n. 6972" },
+                { question: "Quale legge ha centralizzato gli ospedali durante il fascismo?", options: ["Legge 1943, n. 138", "Legge 833/1978", "D.Lgs. 502/1992", "Legge 1968, n. 132"], correct: "Legge 1943, n. 138" },
+                { question: "Quale normativa post-bellica ha riorganizzato i servizi sanitari?", options: ["Legge 1945, n. 417", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1945, n. 417" },
+                { question: "Quale pubblicazione ha rafforzato l’art. 32 della Costituzione?", options: ["GU n. 298 del 1947", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "GU n. 298 del 1947" },
+                { question: "Quale legge ha istituito il Ministero della Sanità?", options: ["Legge 1958, n. 296", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 1958, n. 296" },
+                { question: "Quale legge ha trasformato gli ospedali in enti pubblici autonomi?", options: ["Legge 1968, n. 132", "Legge 833/1978", "D.Lgs. 502/1992", "Legge 180/1978"], correct: "Legge 1968, n. 132" },
+                { question: "Quale DPR ha avviato il decentramento sanitario?", options: ["DPR 1972, n. 4", "DPR 616/1977", "Legge 833/1978", "D.Lgs. 502/1992"], correct: "DPR 1972, n. 4" },
+                { question: "Quale legge ha riformato le mutue?", options: ["Legge 386/1974", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 386/1974" },
+                { question: "Quale legge ha istituito i consultori familiari?", options: ["Legge 405/1975", "Legge 833/1978", "Legge 180/1978", "Legge 194/1978"], correct: "Legge 405/1975" },
+                { question: "Quale DPR ha completato il decentramento sanitario?", options: ["DPR 616/1977", "DPR 1972, n. 4", "Legge 833/1978", "D.Lgs. 502/1992"], correct: "DPR 616/1977" },
+                { question: "Quale legge ha chiuso i manicomi?", options: ["Legge 180/1978", "Legge 833/1978", "Legge 194/1978", "Legge 104/1992"], correct: "Legge 180/1978" },
+                { question: "Quale legge regola l’interruzione volontaria di gravidanza?", options: ["Legge 194/1978", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 194/1978" },
+                { question: "Quale legge tutela i diritti dei disabili?", options: ["Legge 104/1992", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "Legge 104/1992" },
+                { question: "Quale legge ha razionalizzato la pubblica amministrazione?", options: ["Legge 421/1992", "Legge 833/1978", "Legge 180/1978", "D.Lgs. 502/1992"], correct: "Legge 421/1992" },
+                { question: "Quale normativa ha introdotto l’aziendalizzazione delle ASL?", options: ["D.Lgs. 502/1992", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 502/1992" },
+                { question: "Quale legge ha introdotto obblighi di sicurezza sul lavoro?", options: ["Legge 626/1994", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 626/1994" },
+                { question: "Quale legge ha tutelato i dati personali?", options: ["Legge 675/1996", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 675/1996" },
+                { question: "Quale normativa ha rafforzato la prevenzione nel SSN?", options: ["D.Lgs. 229/1999", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 229/1999" },
+                { question: "Quale legge regola i servizi sociali?", options: ["Legge 328/2000", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 328/2000" },
+                { question: "Quale legge ha definito l’OSS come figura socio-sanitaria?", options: ["Legge 3/2001", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 3/2001" },
+                { question: "Quale legge autorizza l’uso dei defibrillatori?", options: ["Legge 120/2001", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 120/2001" },
+                { question: "Quale legge ha rafforzato la protezione dei dati sanitari?", options: ["Legge 196/2003", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 196/2003" },
+                { question: "Quale legge ha riformato la responsabilità sanitaria?", options: ["Legge 24/2017", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "Legge 24/2017" },
+                { question: "Quale normativa armonizza al GDPR?", options: ["D.Lgs. 101/2018", "Legge 833/1978", "Legge 180/1978", "Legge 104/1992"], correct: "D.Lgs. 101/2018" }
+            ]
+        ];
+
+        // Quiz Logic
+        let currentQuiz = null;
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        let timerInterval = null;
+        let timeLeft = 30 * 60; // 30 minutes in seconds
+
+        function selectQuiz() {
+            const quizSelect = document.getElementById("quiz-select");
+            const quizIndex = parseInt(quizSelect.value);
+            if (quizIndex === 0) {
+                resetQuiz();
+                return;
+            }
+            currentQuiz = allQuestions[quizIndex - 1];
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            timeLeft = 30 * 60;
+            document.getElementById("quiz-timer").style.display = "block";
+            document.getElementById("quiz-balls").style.display = "flex";
+            document.getElementById("quiz-result").style.display = "none";
+            document.getElementById("retry-button").style.display = "none";
+            startTimer();
+            renderBalls();
+            renderQuestion();
+        }
+
+        function resetQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById("quiz-timer").style.display = "none";
+            document.getElementById("quiz-balls").style.display = "none";
+            document.getElementById("quiz-question").innerHTML = "";
+            document.getElementById("quiz-options").innerHTML = "";
+            document.getElementById("quiz-feedback").style.display = "none";
+            document.getElementById("quiz-result").style.display = "none";
+            document.getElementById("retry-button").style.display = "none";
+            currentQuiz = null;
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            timeLeft = 30 * 60;
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById("quiz-timer").textContent = `Tempo rimanente: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endQuiz();
+                }
+            }, 1000);
+        }
+
+        function renderBalls() {
+            const ballsContainer = document.getElementById("quiz-balls");
+            ballsContainer.innerHTML = "";
+            for (let i = 0; i < 30; i++) {
+                const ball = document.createElement("div");
+                ball.classList.add("quiz-ball");
+                ball.textContent = i + 1;
+                ballsContainer.appendChild(ball);
+            }
+        }
+
+        function renderQuestion() {
+            if (!currentQuiz || currentQuestionIndex >= currentQuiz.length) {
+                endQuiz();
+                return;
+            }
+            const question = currentQuiz[currentQuestionIndex];
+            document.getElementById("quiz-question").textContent = question.question;
+            const optionsContainer = document.getElementById("quiz-options");
+            optionsContainer.innerHTML = "";
+            question.options.forEach(option => {
+                const optionElement = document.createElement("div");
+                optionElement.classList.add("quiz-option");
+                optionElement.textContent = option;
+                optionElement.addEventListener("click", () => handleAnswer(option));
+                optionsContainer.appendChild(optionElement);
+            });
+            document.getElementById("quiz-feedback").style.display = "none";
+        }
+
+        function handleAnswer(selectedOption) {
+            const question = currentQuiz[currentQuestionIndex];
+            const isCorrect = selectedOption === question.correct;
+            if (isCorrect) {
+                correctAnswers++;
+                document.getElementById("quiz-feedback").textContent = "Risposta corretta!";
+                document.getElementById("quiz-feedback").classList.add("correct");
+                document.getElementById("quiz-feedback").classList.remove("incorrect");
+            } else {
+                document.getElementById("quiz-feedback").textContent = `Risposta sbagliata! La risposta corretta era: ${question.correct}`;
+                document.getElementById("quiz-feedback").classList.add("incorrect");
+                document.getElementById("quiz-feedback").classList.remove("correct");
+            }
+            document.getElementById("quiz-feedback").style.display = "block";
+            const balls = document.getElementsByClassName("quiz-ball");
+            balls[currentQuestionIndex].classList.add(isCorrect ? "correct" : "incorrect");
+            const options = document.getElementsByClassName("quiz-option");
+            for (let option of options) {
+                option.classList.add("disabled");
+            }
+            setTimeout(() => {
+                currentQuestionIndex++;
+                renderQuestion();
+            }, 2000);
+        }
+
+        function endQuiz() {
+            clearInterval(timerInterval);
+            document.getElementById("quiz-timer").style.display = "none";
+            document.getElementById("quiz-question").innerHTML = "";
+            document.getElementById("quiz-options").innerHTML = "";
+            document.getElementById("quiz-feedback").style.display = "none";
+            const resultContainer = document.getElementById("quiz-result");
+            resultContainer.style.display = "flex";
+            resultContainer.textContent = `Quiz completato! Hai risposto correttamente a ${correctAnswers} di 30 domande.`;
+            document.getElementById("retry-button").style.display = "block";
+            document.getElementById("quiz-select").value = "0";
+        }
+
+        document.getElementById("retry-button").addEventListener("click", selectQuiz);
+
         window.onload = () => {
             // Stato iniziale: niente visibile finché non si clicca
+            document.getElementById("retry-button").style.display = "none";
         };
     </script>
 </body>
